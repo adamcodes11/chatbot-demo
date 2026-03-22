@@ -4,17 +4,16 @@
 // ============================================
 
 (function () {
-
   // ============================================================
   // PRESETY — skopiuj jeden blok i podmień wartości
   // ============================================================
 
   // --- PRESET: ByteFlow (domyślny) ---
-  const PROXY_URL       = "https://chatbot.adam-kowalczyk-10.workers.dev/";
-  const BOT_NAME        = "FryzjersTWO";
-  const BOT_SUBTITLE    = "Asystent · Online";
-  const BOT_INITIAL     = "F";
-  const WIDGET_COLOR    = "#2563eb";
+  const PROXY_URL = "https://chatbot.adam-kowalczyk-10.workers.dev/";
+  const BOT_NAME = "FryzjersTWO";
+  const BOT_SUBTITLE = "Asystent · Online";
+  const BOT_INITIAL = "B";
+  const WIDGET_COLOR = "#2563eb";
   const WELCOME_MESSAGE = "Cześć! W czym mogę pomóc? 😊";
 
   // --- PRESET: Przykład innego klienta ---
@@ -155,7 +154,7 @@ ZACHOWANIE:
     }
 
     @media (max-width: 420px) {
-      #bf-box { width: calc(100vw - 24px); right: 12px; bottom: 88px; }
+      #bf-box { width: calc(100vw - 24px); right: 12px; bottom: 88px; left: 12px; }
       #bf-btn { bottom: 16px; right: 16px; }
       #bf-badge-dot { bottom: 40px; right: 12px; }
     }
@@ -194,11 +193,7 @@ ZACHOWANIE:
       min-height: 300px; max-height: 360px; background: #f8fafc;
       scrollbar-width: thin; scrollbar-color: #e2e8f0 transparent;
     }
-    @supports (-webkit-touch-callout: none) {
-  #bf-box {
-    bottom: env(keyboard-inset-height, 94px);
-  }
-}
+
     @keyframes bf-msg-in {
       from { opacity: 0; transform: translateY(6px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -207,7 +202,7 @@ ZACHOWANIE:
       from { opacity: 1; transform: translateY(0); }
       to   { opacity: 0; transform: translateY(-4px); }
     }
-    .bf-ai-wrap, .bf-user-wrap, .bf-pills, .bf-contact-btns {
+    .bf-ai-wrap, .bf-user-msg, .bf-pills, .bf-contact-btns {
       animation: bf-msg-in 0.18s ease;
     }
     .bf-pills.hiding, .bf-contact-btns.hiding {
@@ -674,24 +669,28 @@ ZACHOWANIE:
   async function getResponse(text) {
     history.push({ role: "user", content: text });
 
-    const controller    = new AbortController();
-    const timeoutId     = setTimeout(() => controller.abort(), STREAM_TIMEOUT);
+    const controller = new AbortController();
+    const timeoutId  = setTimeout(() => controller.abort(), STREAM_TIMEOUT);
 
     const res = await fetch(PROXY_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       signal: controller.signal,
       body: JSON.stringify({
-        messages: [{ role: "system", content: SYSTEM_PROMPT }, ...getHistoryForAPI()],
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          ...getHistoryForAPI(),
+        ],
         sessionId: getSessionId(),
         site: window.location.hostname,
       }),
     });
 
     clearTimeout(timeoutId);
+
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-    const bubble        = createStreamBubble();
+    const bubble = createStreamBubble();
     let reply           = "";
     let buffer          = "";
     let gotFirstToken   = false;
