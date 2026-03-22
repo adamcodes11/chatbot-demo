@@ -1,201 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ByteFlow — Smart Automation for Small Business</title>
+<title>FryzjersTWO — Demo Chatbot</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  :root {
-    --primary: #2563eb;
-    --primary-dark: #1d4ed8;
-    --dark: #0f172a;
-    --gray: #64748b;
-    --light: #f8fafc;
-    --border: #e2e8f0;
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #f8fafc;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  body { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--dark); background: #fff; }
-
-  nav {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 1.2rem 6%; border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; background: #fff; z-index: 100;
+  .center {
+    text-align: center;
+    padding: 2rem;
   }
-  .logo { font-size: 1.4rem; font-weight: 700; color: var(--primary); letter-spacing: -0.5px; }
-  .nav-links { display: flex; gap: 2rem; list-style: none; }
-  .nav-links a { text-decoration: none; color: var(--gray); font-size: 0.95rem; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--primary); }
-  .nav-cta {
-    background: var(--primary); color: #fff; padding: 0.55rem 1.3rem;
-    border-radius: 8px; font-size: 0.9rem; font-weight: 600;
-    text-decoration: none; transition: background 0.2s;
+  .logo {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #2563eb;
+    margin-bottom: 0.5rem;
   }
-  .nav-cta:hover { background: var(--primary-dark); }
-
-  .hero {
-    padding: 6rem 6% 5rem;
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 3rem; max-width: 1200px; margin: 0 auto;
-  }
-  .hero-text { max-width: 560px; }
-  .badge {
-    display: inline-block; background: #eff6ff; color: var(--primary);
-    font-size: 0.8rem; font-weight: 600; padding: 0.3rem 0.9rem;
-    border-radius: 999px; margin-bottom: 1.5rem; letter-spacing: 0.3px;
-  }
-  h1 { font-size: 3rem; font-weight: 800; line-height: 1.15; letter-spacing: -1px; margin-bottom: 1.2rem; }
-  h1 span { color: var(--primary); }
-  .hero p { font-size: 1.1rem; color: var(--gray); line-height: 1.7; margin-bottom: 2rem; }
-  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .btn-primary {
-    background: var(--primary); color: #fff; padding: 0.8rem 1.8rem;
-    border-radius: 10px; font-size: 1rem; font-weight: 600;
-    text-decoration: none; transition: background 0.2s;
-  }
-  .btn-primary:hover { background: var(--primary-dark); }
-  .btn-secondary {
-    background: var(--light); color: var(--dark); padding: 0.8rem 1.8rem;
-    border-radius: 10px; font-size: 1rem; font-weight: 600;
-    text-decoration: none; border: 1px solid var(--border); transition: background 0.2s;
-  }
-  .btn-secondary:hover { background: var(--border); }
-
-  .hero-visual {
-    background: var(--light); border: 1px solid var(--border);
-    border-radius: 16px; padding: 2rem; min-width: 300px;
-    font-family: 'Courier New', monospace; font-size: 0.85rem;
-    color: var(--gray); line-height: 1.8; flex-shrink: 0;
-  }
-  .hero-visual .comment { color: #94a3b8; }
-  .hero-visual .keyword { color: var(--primary); font-weight: 700; }
-  .hero-visual .string { color: #16a34a; }
-  .hero-visual .fn { color: #9333ea; }
-
-  .stats {
-    display: flex; gap: 3rem; padding: 3rem 6%;
-    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-    justify-content: center; flex-wrap: wrap;
-  }
-  .stat { text-align: center; }
-  .stat-num { font-size: 2rem; font-weight: 800; color: var(--primary); }
-  .stat-label { font-size: 0.9rem; color: var(--gray); margin-top: 0.2rem; }
-
-  .services { padding: 5rem 6%; max-width: 1200px; margin: 0 auto; }
-  .section-label { text-align: center; color: var(--primary); font-weight: 600; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.8rem; }
-  h2 { text-align: center; font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 0.8rem; }
-  .section-sub { text-align: center; color: var(--gray); font-size: 1rem; margin-bottom: 3rem; }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
-  .card {
-    border: 1px solid var(--border); border-radius: 14px; padding: 2rem;
-    transition: box-shadow 0.2s, transform 0.2s;
-  }
-  .card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.08); transform: translateY(-3px); }
-  .card-icon { font-size: 2rem; margin-bottom: 1rem; }
-  .card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; }
-  .card p { font-size: 0.9rem; color: var(--gray); line-height: 1.6; }
-
-  .cta-section {
-    background: var(--primary); color: #fff;
-    padding: 5rem 6%; text-align: center; margin-top: 4rem;
-  }
-  .cta-section h2 { color: #fff; margin-bottom: 1rem; }
-  .cta-section p { color: #bfdbfe; margin-bottom: 2rem; font-size: 1.05rem; }
-  .btn-white {
-    background: #fff; color: var(--primary); padding: 0.8rem 2rem;
-    border-radius: 10px; font-weight: 700; font-size: 1rem;
-    text-decoration: none; transition: opacity 0.2s;
-  }
-  .btn-white:hover { opacity: 0.9; }
-
-  footer {
-    text-align: center; padding: 2rem;
-    color: var(--gray); font-size: 0.85rem;
-    border-top: 1px solid var(--border);
+  .sub {
+    color: #64748b;
+    font-size: 1rem;
   }
 </style>
 </head>
 <body>
-
-<nav>
-  <div class="logo">⚡ ByteFlow</div>
-  <ul class="nav-links">
-    <li><a href="#">Services</a></li>
-    <li><a href="#">Portfolio</a></li>
-    <li><a href="#">Pricing</a></li>
-    <li><a href="#">Contact</a></li>
-  </ul>
-  <a href="#" class="nav-cta">Get a Quote</a>
-</nav>
-
-<section class="hero">
-  <div class="hero-text">
-    <span class="badge">🚀 Python Automation & Web Development</span>
-    <h1>Stop doing <span>repetitive</span> tasks manually.</h1>
-    <p>I build Python scripts, web scrapers, and automation tools that save small businesses hours every week. Fast delivery, clean code, real results.</p>
-    <div class="hero-btns">
-      <a href="#" class="btn-primary">See My Work</a>
-      <a href="#" class="btn-secondary">Contact Me →</a>
-    </div>
+  <div class="center">
+    <div class="logo">✂️ FryzjersTWO</div>
+    <div class="sub">Kliknij ikonę czatu w prawym dolnym rogu</div>
   </div>
-  <div class="hero-visual">
-    <div><span class="comment"># Automate your workflow</span></div>
-    <div><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div>
-    <div><span class="keyword">from</span> scraper <span class="keyword">import</span> fetch</div>
-    <br>
-    <div><span class="fn">def</span> <span class="keyword">process_data</span>(url):</div>
-    <div>&nbsp;&nbsp;data = <span class="fn">fetch</span>(url)</div>
-    <div>&nbsp;&nbsp;df = pd.<span class="fn">DataFrame</span>(data)</div>
-    <div>&nbsp;&nbsp;df.<span class="fn">to_excel</span>(<span class="string">"report.xlsx"</span>)</div>
-    <div>&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">"✅ Done!"</span></div>
-    <br>
-    <div><span class="comment"># Runs in seconds, not hours</span></div>
-  </div>
-</section>
-
-<div class="stats">
-  <div class="stat"><div class="stat-num">3+</div><div class="stat-label">Projects Completed</div></div>
-  <div class="stat"><div class="stat-num">24h</div><div class="stat-label">Average Delivery</div></div>
-  <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Satisfaction Rate</div></div>
-  <div class="stat"><div class="stat-num">5★</div><div class="stat-label">Client Rating</div></div>
-</div>
-
-<section class="services">
-  <div class="section-label">What I Do</div>
-  <h2>Services</h2>
-  <p class="section-sub">Simple, practical solutions for real business problems.</p>
-  <div class="cards">
-    <div class="card">
-      <div class="card-icon">🕷️</div>
-      <h3>Web Scraping</h3>
-      <p>Extract prices, contacts, listings, or any data from websites automatically and export to Excel or CSV.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">⚙️</div>
-      <h3>Python Automation</h3>
-      <p>Automate file processing, data cleaning, report generation, and other repetitive tasks.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">🌐</div>
-      <h3>Landing Pages</h3>
-      <p>Clean, fast, mobile-friendly HTML/CSS websites for your business or project.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">📊</div>
-      <h3>Data Processing</h3>
-      <p>Clean, merge, and transform messy spreadsheets into organized, ready-to-use databases.</p>
-    </div>
-  </div>
-</section>
-
-<section class="cta-section">
-  <h2>Got a task that's eating your time?</h2>
-  <p>Tell me what you need — I'll tell you if I can automate it.</p>
-  <a href="#" class="btn-white">Let's Talk →</a>
-</section>
-
-<footer>
-  © 2025 ByteFlow · Built with Python & passion
-</footer>
-<script src="chatbot.js" ></script>
+  <script src="chatbot.js"></script>
 </body>
 </html>
